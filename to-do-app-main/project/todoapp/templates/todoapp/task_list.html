@@ -1,0 +1,78 @@
+ {% extends 'todoapp/main.html'%}
+
+{% block content %}
+
+
+ <div class="header-bar bg-info p-4 mt-2">
+      <div class="row">
+         <div class="col-md-10">
+            <h1>Your To-Do List</h1>
+         </div>
+         <div class="col-md-2">
+            {% if request.user.is_authenticated %}
+   
+            <a href="{% url 'logout' %}" class="btn btn-dark block pl-4 pr-4 mt-2">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-dark block pl-4 pr-4 mt-2">Login</a> 
+            {% endif %} 
+
+         </div>
+      </div>
+      <h6>Hello {{request.user|title}}</h6>
+ </div>
+ <div class="alert alert-success mt-3">
+   <p style="font-size: 1.2rem;">You have <i>{{count}}</i> incomplete task{{ count|pluralize:"s"}} </p>
+ </div>
+
+   <form  method="GET" style="margin-top: 20px; display: flex;">
+      <div class="row">
+         <div class="col-md-8 col-sm-5 col-xs-5">
+            <input type="text" class="form-control pr-2" name="search-area" value="{{search_input}}">
+         </div>
+         <div class="col-md-4 col-sm-4 col-xs-5 ">
+             <input class="btn btn-outline-info" type="submit" value="Search">
+         </div>
+      </div>
+   </form>
+   <a  class="btn btn-primary mt-4" href="{% url 'task-create' %}"><strong>Add task</strong> </a>
+
+
+
+
+
+<div class="card p-4 mt-4">
+   {% for task in tasks %}
+      
+         {% if task.complete %}
+            <div class="row">
+               <div class="task-complete-icon"></div>
+               <i><s><a href="{% url 'task-update' task.id %}">{{task}}</a></s></i>
+            </div>
+         <hr>
+         
+         {% else %}
+         <div class="row">
+            <div class="col-md-4">
+               <div class="task-incomplete-icon"></div>
+               <a class="text-sm" href="{% url 'task-update' task.id %}">{{task}}</a>
+            </div><br>
+            <div class="col-md-4">
+               {{task.due_date}} {{task.due_time}}
+            </div>
+            <div class="col-md-4">
+               <a class="btn btn-danger btn-sm shadow-sm pl-4 pr-4" href="{% url 'task-delete' task.id %}"> <span class="text-sm">Delete</span> </a>
+            </div>      
+         </div>
+         <hr>
+         
+      {% endif %}
+     
+   {% empty %}
+     <div class="alert alert-info mt-4">
+      No items in list
+     </div>
+   {% endfor %} 
+</div>
+
+
+{% endblock content %}

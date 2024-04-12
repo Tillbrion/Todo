@@ -1,0 +1,81 @@
+{% extends 'todoapp/main.html'%}
+
+{% block content %}
+
+<div class="header-bar mt-2">
+    <a class="btn  btn-dark" href="{% url 'tasks' %}">&#8592; Back</a>
+</div>
+
+<div class="card p-4 mt-4">
+    <form action="" class="form  form-group" method="POST">
+        {% csrf_token %}
+        
+        <h2 class="form-title">Create a New Task</h2>
+        
+        <p class="form-description">Please fill in the details below:</p>
+        <div>  
+            <div id="calendar"></div>
+        </div>   
+            <script>  
+              var currentDate = new Date("{{ form.due_date.value }}");  
+              console.log(currentDate);
+              function formatDate(dateString) {
+                var date = new Date(dateString);
+                var year = date.getFullYear();
+                var month = String(date.getMonth() + 1).padStart(2, '0');
+                var day = String(date.getDate()).padStart(2, '0');
+                return year + '-' + month + '-' + day;
+              }
+
+              var date = new Date(formatDate(currentDate));
+
+            $('#calendar').datepicker({  
+              inline: true,  
+              firstDay: 1, 
+              showOtherMonths: true,  
+              dayNamesMin:['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']  
+            });  
+
+            $("#calendar").datepicker("setDate", date);
+
+            //$("#datepicker").datepicker("setDate", currentDate);
+            </script> 
+        
+       <div class="form-group">
+        <label>{{form.tittle.label}}</label> <br>
+         <!-- {{ form.tittle }} -->
+        <input type="text" name="tittle" value="{{form.tittle.value}}" class="form-control" required id="id_tittle">
+
+       </div>
+
+
+      <div class="form-group">
+        <label>{{form.discription.label}}</label> <br>
+        <!-- {{form.discription}} -->
+      
+        <textarea name="discription"  cols="40" rows="10" id="id_discription" class="form-control">{{form.discription.value}}</textarea>
+      </div>
+
+
+
+      <div class="form-group mt-2 mb-2">
+        <label>{{form.complete.label}}</label>
+        {{form.complete}}
+       
+      </div>
+
+      <label>{{form.due_date.label}}</label> <br>
+      <input type="date" value={{form.due_date}}><br><br>
+      
+      <label>{{form.due_time.label}}</label><br>
+      <input type="time" value={{form.due_time}}> <br><br>
+
+      <input  class="btn btn-info" type="submit" value="submit" >  <br>
+   
+    </form>
+</div>
+
+
+
+
+{% endblock content %}

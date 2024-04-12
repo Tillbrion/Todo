@@ -1,0 +1,28 @@
+{% extends 'todoapp/main.html'%}
+
+{% block content %}
+<div class="mt-2">
+    <a class="btn  btn-dark" href="{% url 'tasks' %}"> Go back</a>
+
+</div>
+
+<div class="card mt-4">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="card-header">
+            <h4>Delete {{task}}</h4>
+        </div>
+        <div class="card-body">
+            <p>Are u sure u want to delete this task?</p>
+            <div class="d-grid gap-2">
+                <input class="btn btn-danger" value="Proceed to Delete" type="submit">
+             </div>
+            
+        </div>
+    </form>
+</div>
+
+
+
+
+{% endblock content %}
